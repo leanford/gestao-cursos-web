@@ -1,3 +1,7 @@
+* {
+  color: #454545 !important;
+}
+
 body {
   margin: 0;
   background-color: #FAFAFA;
@@ -5,18 +9,18 @@ body {
 
 /* borda esquerda */
 .mdc-text-field--outlined .mdc-notched-outline__leading {
-  border-color: #044CF4 !important;
+  border-color: #707070 !important;
 }
 
 /* borda inferior a label flutuante */
 .mdc-text-field--outlined .mdc-notched-outline__notch {
-  border-color: #044CF4 !important;
+  border-color: #707070 !important;
   border-left: none !important;
 }
 
 /* borda lado direito */
 .mdc-text-field--outlined .mdc-notched-outline__trailing {
-  border-color: #044CF4 !important;
+  border-color: #707070 !important;
 }
 
 /* label flutuante */
@@ -26,7 +30,7 @@ body {
 
 /* svg arrow select */
 .mat-mdc-select-arrow svg {
-  fill: #044CF4 !important;
+  fill: #707070 !important;
 }
 
 /* bg select */
@@ -41,5 +45,14 @@ body {
 
 /* cor do cursor */
 .mat-mdc-input-element {
-  caret-color: #3f51b5 !important;
+  caret-color: #707070 !important;
+}
+
+.btn-padrao {
+  background-color: #044CF4;
+  color: white !important;
+  font-weight: bold;
+  height: 56px;
+  border: none;
+  border-radius: 8px;
 }

@@ -11,9 +11,6 @@
 .navbar-brand {
   display: flex;
   align-items: center;
-  font-weight: bold;
-  font-size: 1.25rem;
-  color: #ffffff;
   text-decoration: none;
 }
 
@@ -43,8 +40,9 @@
 
 .nav-link {
   text-decoration: none;
-  color: #ffffff;
-  font-weight: 500;
+  color: #ffffff !important;
+  font-size: 18px;
+  font-weight: bold;
   text-transform: uppercase;
   transition: color 0.3s;
 }

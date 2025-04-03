@@ -6,12 +6,9 @@ mat-card {
 
 .form-container {
   display: flex;
+
   gap: 10px;
   margin-bottom: 20px;
-}
-
-::ng-deep .mat-mdc-text-field-wrapper {
-  background: white !important;
 }
 
 table {
@@ -20,6 +17,10 @@ table {
   background-color: #F7F7F7;
   width: 100%;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+::ng-deep .mat-mdc-text-field-wrapper {
+  background: white !important;
 }
 
 ::ng-deep .mat-mdc-header-cell:first-child {

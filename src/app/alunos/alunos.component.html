@@ -18,8 +18,8 @@
         </mat-select>
       </mat-form-field>
 
-      <button mat-icon-button color="primary" (click)="adicionarAluno()">
-        <mat-icon>add</mat-icon>
+      <button class="btn-padrao" (click)="adicionarAluno()">
+        ADICIONAR ALUNO
       </button>
     </div>
 
@@ -37,32 +37,50 @@
           <mat-label>Filtrar por curso</mat-label>
           <input matInput [(ngModel)]="filtroCurso">
         </mat-form-field>
+
+        <button class="btn-padrao" (click)="adicionarAluno()">
+          PESQUISAR
+        </button>
+
       </div>
     </div>
   </div>
 
-  <table mat-table [dataSource]="alunosFiltrados" class="mat-elevation-z8">
+  <div *ngIf="isMobile; else tabela">
+    <div *ngFor="let aluno of alunosFiltrados" class="card-lista">
+      <p><strong>Nome:</strong> {{ aluno.nome }}</p>
+      <p><strong>Curso:</strong> {{ aluno.curso }}</p>
+      <button mat-icon-button color="warn">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
 
-    <ng-container matColumnDef="nome">
-      <th mat-header-cell *matHeaderCellDef> Nome </th>
-      <td mat-cell *matCellDef="let aluno"> {{ aluno.nome }} </td>
-    </ng-container>
+  <ng-template #tabela>
 
-    <ng-container matColumnDef="curso">
-      <th mat-header-cell *matHeaderCellDef> Curso </th>
-      <td mat-cell *matCellDef="let aluno"> {{ aluno.curso }} </td>
-    </ng-container>
+    <table mat-table [dataSource]="alunosFiltrados" class="mat-elevation-z8">
 
-    <ng-container matColumnDef="acoes">
-      <th mat-header-cell *matHeaderCellDef> Ações </th>
-      <td mat-cell *matCellDef="let aluno; let i = index">
-        <button mat-icon-button color="warn" (click)="deletarAluno(i)">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </td>
-    </ng-container>
+      <ng-container matColumnDef="nome">
+        <th mat-header-cell *matHeaderCellDef> Nome </th>
+        <td mat-cell *matCellDef="let aluno"> {{ aluno.nome }} </td>
+      </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
+      <ng-container matColumnDef="curso">
+        <th mat-header-cell *matHeaderCellDef> Curso </th>
+        <td mat-cell *matCellDef="let aluno"> {{ aluno.curso }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="acoes">
+        <th mat-header-cell *matHeaderCellDef> Ações </th>
+        <td mat-cell *matCellDef="let aluno; let i = index">
+          <button mat-icon-button color="warn" (click)="deletarAluno(i)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </ng-template>
 </mat-card>

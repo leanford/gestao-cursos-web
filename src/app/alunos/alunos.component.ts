@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
+import { HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-alunos',
@@ -27,6 +28,14 @@ import { MatSelectModule } from '@angular/material/select';
   ]
 })
 export class AlunosComponent {
+
+  isMobile: boolean = window.innerWidth < 410;
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.isMobile = window.innerWidth < 410;
+  }
+
   displayedColumns: string[] = ['nome', 'curso', 'acoes'];
 
   alunos = [
