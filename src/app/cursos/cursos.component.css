@@ -10,16 +10,12 @@ mat-card {
   margin-bottom: 20px;
 }
 
-/* mat-form-field {
-  flex: 1;
-} */
-
 ::ng-deep .mat-mdc-text-field-wrapper {
   background: white !important;
 }
 
 table {
-  border: 1px solid #D3D3D3 ;
+  border: 1px solid #D3D3D3;
   border-radius: 8px;
   background-color: #F7F7F7;
   width: 100%;

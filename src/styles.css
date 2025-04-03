@@ -2,3 +2,44 @@ body {
   margin: 0;
   background-color: #FAFAFA;
 }
+
+/* borda esquerda */
+.mdc-text-field--outlined .mdc-notched-outline__leading {
+  border-color: #044CF4 !important;
+}
+
+/* borda inferior a label flutuante */
+.mdc-text-field--outlined .mdc-notched-outline__notch {
+  border-color: #044CF4 !important;
+  border-left: none !important;
+}
+
+/* borda lado direito */
+.mdc-text-field--outlined .mdc-notched-outline__trailing {
+  border-color: #044CF4 !important;
+}
+
+/* label flutuante */
+.mdc-text-field--outlined .mat-mdc-floating-label {
+  color: #454545 !important;
+}
+
+/* svg arrow select */
+.mat-mdc-select-arrow svg {
+  fill: #044CF4 !important;
+}
+
+/* bg select */
+.mat-mdc-select-panel {
+  background-color: #ffffff !important;
+}
+
+/* bg opcao select */
+.mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled):not(.mat-mdc-option-multiple) {
+  background-color: #E4E3E3 !important;
+}
+
+/* cor do cursor */
+.mat-mdc-input-element {
+  caret-color: #3f51b5 !important;
+}
