@@ -1,34 +1,44 @@
 <mat-card>
   <h1>Gerenciamento de Alunos</h1>
 
-  <div class="filter-container">
-    <mat-form-field appearance="outline">
-      <mat-label>Filtrar por nome</mat-label>
-      <input matInput [(ngModel)]="filtroNome">
-    </mat-form-field>
+  <div>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Filtrar por curso</mat-label>
-      <input matInput [(ngModel)]="filtroCurso">
-    </mat-form-field>
-  </div>
+    <h4>Adicionar Aluno</h4>
 
-  <div class="form-container">
-    <mat-form-field appearance="outline">
-      <mat-label>Nome do Aluno</mat-label>
-      <input matInput [(ngModel)]="nome">
-    </mat-form-field>
+    <div class="form-container">
+      <mat-form-field appearance="outline">
+        <mat-label>Nome do Aluno</mat-label>
+        <input matInput [(ngModel)]="nome">
+      </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Curso</mat-label>
-      <mat-select [(ngModel)]="curso">
-        <mat-option *ngFor="let c of cursos" [value]="c">{{ c }}</mat-option>
-      </mat-select>
-    </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Curso</mat-label>
+        <mat-select [(ngModel)]="curso">
+          <mat-option *ngFor="let c of cursos" [value]="c">{{ c }}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-    <button mat-icon-button color="primary" (click)="adicionarAluno()">
-      <mat-icon>add</mat-icon>
-    </button>
+      <button mat-icon-button color="primary" (click)="adicionarAluno()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+
+    <div>
+
+      <h4>Pesquisar</h4>
+
+      <div class="filter-container">
+        <mat-form-field appearance="outline">
+          <mat-label>Filtrar por nome</mat-label>
+          <input matInput [(ngModel)]="filtroNome">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Filtrar por curso</mat-label>
+          <input matInput [(ngModel)]="filtroCurso">
+        </mat-form-field>
+      </div>
+    </div>
   </div>
 
   <table mat-table [dataSource]="alunosFiltrados" class="mat-elevation-z8">
