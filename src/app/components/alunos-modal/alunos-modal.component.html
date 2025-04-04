@@ -1,0 +1,15 @@
+<div class="modal-backdrop" (click)="onClose()">
+    <div class="modal" (click)="$event.stopPropagation()">
+
+        <button class="btn-close-modal" (click)="onClose()">X</button>
+
+        <div *ngFor="let aluno of alunos; let i = index" class="card-lista">
+            <p><strong>Nome:</strong> {{ aluno.nome }}</p>
+        </div>
+
+        <div *ngIf="alunos.length === 0" class="sem-dados">
+            <p>Nenhum aluno encontrado.</p>
+        </div>
+
+    </div>
+</div>
