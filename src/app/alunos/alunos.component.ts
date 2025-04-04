@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
@@ -8,7 +8,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
-import { HostListener } from '@angular/core';
+import { AlunoService, Aluno } from '../services/aluno.service';
+import { CursoService, Curso } from '../services/curso.service';
+import { ToastrService } from 'ngx-toastr';
+import { ConfirmModalComponent } from '../components/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-alunos',
@@ -24,10 +27,23 @@ import { HostListener } from '@angular/core';
     MatInputModule,
     MatFormFieldModule,
     MatCardModule,
-    MatSelectModule
+    MatSelectModule,
+    ConfirmModalComponent
   ]
 })
-export class AlunosComponent {
+export class AlunosComponent implements OnInit {
+
+  alunos: Aluno[] = [];
+  nome = '';
+  curso = '';
+  cursos: Curso[] = [];
+  cursosSelecionados: Curso[] = [];
+  filtroNome = '';
+  filtroCurso = '';
+  mostrarConfirmacaoAdicaoAluno = false;
+  mostrarConfirmacaoRemocaoAluno = false;
+  alunoParaAdicionar: Aluno | null = null;
+  alunoParaRemover: Aluno | null = null;
 
   isMobile: boolean = window.innerWidth < 410;
 
@@ -38,35 +54,99 @@ export class AlunosComponent {
 
   displayedColumns: string[] = ['nome', 'curso', 'acoes'];
 
-  alunos = [
-    { nome: 'Carlos', curso: 'Engenharia de Software' },
-    { nome: 'Mariana', curso: 'Ciência da Computação' },
-    { nome: 'João', curso: 'Sistemas de Informação' }
-  ];
+  constructor(
+    private alunoService: AlunoService,
+    private cursoService: CursoService,
+    private toastr: ToastrService
+  ) { }
 
-  cursos = ['Engenharia de Software', 'Ciência da Computação', 'Sistemas de Informação'];
+  ngOnInit(): void {
+    this.carregarAlunos();
+    this.carregarCursos();
+  }
 
-  nome = '';
-  curso = '';
-  filtroNome = '';
-  filtroCurso = '';
+  carregarAlunos(): void {
+    this.alunoService.listar().subscribe({
+      next: (dados) => this.alunos = dados,
+      error: (err) => console.error('Erro ao carregar alunos', err)
+    });
+  }
 
-  adicionarAluno() {
-    if (this.nome.trim() && this.curso.trim()) {
-      this.alunos.push({ nome: this.nome, curso: this.curso });
-      this.nome = '';
-      this.curso = '';
+  carregarCursos(): void {
+    this.cursoService.listarSemTrazerAlunos().subscribe({
+      next: (dados) => this.cursos = dados,
+      error: (err) => console.error('Erro ao carregar cursos', err)
+    });
+  }
+
+  verificarCursos(): void {
+    if (this.cursos.length === 0) {
+      this.toastr.warning('Primeiro crie um curso!', 'Nenhum curso disponível no momento.');
     }
   }
 
-  deletarAluno(index: number) {
-    this.alunos.splice(index, 1);
+  confirmarAdicaoAluno(): void {
+    if (!this.alunoParaAdicionar) return;
+
+    this.alunoService.criar(this.alunoParaAdicionar).subscribe({
+      next: () => {
+        this.carregarAlunos();
+        this.nome = '';
+        this.cursosSelecionados = [];
+        this.toastr.success('Aluno adicionado com sucesso!', 'Adicionado com sucesso!');
+      },
+      error: (err) => console.error('Erro ao criar aluno', err)
+    });
+
+    this.alunoParaAdicionar = null;
+    this.mostrarConfirmacaoAdicaoAluno = false;
   }
+
+  adicionarAluno(): void {
+    const nomeTrimmed = this.nome.trim();
+
+    if (nomeTrimmed && this.cursosSelecionados.length > 0) {
+      this.alunoParaAdicionar = { nome: nomeTrimmed, cursos: this.cursosSelecionados };
+      this.mostrarConfirmacaoAdicaoAluno = true;
+    } else {
+      this.toastr.warning('Digite o nome do aluno e selecione pelo menos um curso!', 'Atenção!');
+    }
+  }
+
+  confirmarRemocaoAluno(): void {
+    if (!this.alunoParaRemover?.id) return;
+
+    this.alunoService.deletar(this.alunoParaRemover.id).subscribe({
+      next: () => {
+        this.toastr.success('Aluno removido com sucesso!', 'Removido com sucesso!');
+        this.carregarAlunos();
+      },
+      error: (err) => console.error('Erro ao deletar aluno', err)
+    });
+
+    this.alunoParaRemover = null;
+    this.mostrarConfirmacaoRemocaoAluno = false;
+  }
+
+  deletarAluno(index: number): void {
+    const aluno = this.alunosFiltrados[index];
+    if (aluno?.id) {
+      this.alunoParaRemover = aluno;
+      this.mostrarConfirmacaoRemocaoAluno = true;
+    }
+  }
+
 
   get alunosFiltrados() {
     return this.alunos.filter(aluno =>
-      aluno.nome.toLowerCase().includes(this.filtroNome.toLowerCase()) &&
-      aluno.curso.toLowerCase().includes(this.filtroCurso.toLowerCase())
+      (aluno.nome?.toLowerCase() ?? '').includes(this.filtroNome.toLowerCase()) &&
+      (aluno.cursos?.map(c => c.nome.toLowerCase()).join(', ') ?? '').includes(this.filtroCurso.toLowerCase())
     );
   }
+
+  formatarCursos(cursos?: Curso[]): string {
+    return cursos?.map(c => c.nome).join(', ') || '';
+  }
+
+
 }

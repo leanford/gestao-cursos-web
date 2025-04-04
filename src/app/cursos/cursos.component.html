@@ -1,6 +1,8 @@
 <mat-card>
   <h1>Gerenciamento de Cursos</h1>
 
+  <h3>Adicionar Curso</h3>
+
   <div class="form-container">
     <mat-form-field appearance="outline">
       <mat-label>Nome do Curso</mat-label>
@@ -8,11 +10,11 @@
     </mat-form-field>
 
     <button class="btn-padrao" (click)="adicionarCurso()">
-      ADICIONAR CURSO
+      ADICIONAR
     </button>
   </div>
 
-  <table mat-table [dataSource]="cursos" class="mat-elevation-z8">
+  <table mat-table [dataSource]="cursos" class="mat-elevation-z8" *ngIf="cursos.length > 0">
 
     <ng-container matColumnDef="nome">
       <th mat-header-cell *matHeaderCellDef> Nome do Curso </th>
@@ -22,10 +24,10 @@
     <ng-container matColumnDef="acoes">
       <th mat-header-cell *matHeaderCellDef> Ações </th>
       <td mat-cell *matCellDef="let curso; let i = index">
-        <button mat-icon-button color="accent" (click)="visualizarAlunos(curso)">
-          <mat-icon>visibility</mat-icon>
+        <button matTooltip="VER TURMA" mat-icon-button color="accent" (click)="visualizarAlunos(curso)">
+          <mat-icon>groups</mat-icon>
         </button>
-        <button mat-icon-button color="warn" (click)="deletarCurso(i)">
+        <button matTooltip="EXCLUIR CURSO" mat-icon-button color="warn" (click)="deletarCurso(i)">
           <mat-icon>delete</mat-icon>
         </button>
       </td>
@@ -34,4 +36,22 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
+
+  <div *ngIf="cursos.length === 0" class="sem-dados">
+    <p>Nenhum curso encontrado.</p>
+  </div>
+
 </mat-card>
+
+<app-alunos-modal *ngIf="alunosVisiveis" [alunos]="alunosVisiveis" (fechar)="fecharModal()"></app-alunos-modal>
+
+
+<app-confirm-modal *ngIf="mostrarConfirmacaoAdicao" [titulo]="'Adicionar Curso'"
+  [mensagem]="'Deseja adicionar este curso?'" [textoConfirmar]="'Sim, adicionar'" [textoCancelar]="'Cancelar'"
+  (confirm)="confirmarAdicaoCurso()" (cancel)="mostrarConfirmacaoAdicao = false">
+</app-confirm-modal>
+
+<app-confirm-modal *ngIf="mostrarConfirmacaoDelete" [titulo]="'Excluir Curso'"
+  [mensagem]="'Deseja realmente excluir o curso ' + cursoParaDeletar?.nome + '?'" [textoConfirmar]="'Sim, excluir'"
+  [textoCancelar]="'Cancelar'" (confirm)="confirmarDeleteCurso()" (cancel)="mostrarConfirmacaoDelete = false">
+</app-confirm-modal>

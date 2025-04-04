@@ -3,7 +3,7 @@
 
   <div>
 
-    <h4>Adicionar Aluno</h4>
+    <h3>Adicionar Aluno</h3>
 
     <div class="form-container">
       <mat-form-field appearance="outline">
@@ -12,20 +12,20 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline">
-        <mat-label>Curso</mat-label>
-        <mat-select [(ngModel)]="curso">
-          <mat-option *ngFor="let c of cursos" [value]="c">{{ c }}</mat-option>
+        <mat-label>Cursos</mat-label>
+        <mat-select [(ngModel)]="cursosSelecionados" multiple (click)="verificarCursos()">
+          <mat-option *ngFor="let c of cursos" [value]="c">{{ c.nome }}</mat-option>
         </mat-select>
       </mat-form-field>
 
       <button class="btn-padrao" (click)="adicionarAluno()">
-        ADICIONAR ALUNO
+        ADICIONAR
       </button>
     </div>
 
     <div>
 
-      <h4>Pesquisar</h4>
+      <h3>Pesquisar Aluno</h3>
 
       <div class="filter-container">
         <mat-form-field appearance="outline">
@@ -38,19 +38,17 @@
           <input matInput [(ngModel)]="filtroCurso">
         </mat-form-field>
 
-        <button class="btn-padrao" (click)="adicionarAluno()">
-          PESQUISAR
-        </button>
-
       </div>
     </div>
   </div>
 
   <div *ngIf="isMobile; else tabela">
-    <div *ngFor="let aluno of alunosFiltrados" class="card-lista">
+    <div *ngFor="let aluno of alunosFiltrados; let i = index" class="card-lista">
       <p><strong>Nome:</strong> {{ aluno.nome }}</p>
-      <p><strong>Curso:</strong> {{ aluno.curso }}</p>
-      <button mat-icon-button color="warn">
+
+      <p><strong>Cursos:</strong> {{ formatarCursos(aluno.cursos) }}</p>
+
+      <button (click)="deletarAluno(i)">
         <mat-icon>delete</mat-icon>
       </button>
     </div>
@@ -58,7 +56,7 @@
 
   <ng-template #tabela>
 
-    <table mat-table [dataSource]="alunosFiltrados" class="mat-elevation-z8">
+    <table mat-table [dataSource]="alunosFiltrados" class="mat-elevation-z8" *ngIf="alunosFiltrados.length > 0">
 
       <ng-container matColumnDef="nome">
         <th mat-header-cell *matHeaderCellDef> Nome </th>
@@ -66,8 +64,8 @@
       </ng-container>
 
       <ng-container matColumnDef="curso">
-        <th mat-header-cell *matHeaderCellDef> Curso </th>
-        <td mat-cell *matCellDef="let aluno"> {{ aluno.curso }} </td>
+        <th mat-header-cell *matHeaderCellDef> Cursos </th>
+        <td mat-cell *matCellDef="let aluno"> {{ formatarCursos(aluno.cursos) }} </td>
       </ng-container>
 
       <ng-container matColumnDef="acoes">
@@ -82,5 +80,20 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+
+    <div *ngIf="alunosFiltrados.length === 0" class="sem-dados">
+      <p>Nenhum aluno encontrado.</p>
+    </div>
+
   </ng-template>
 </mat-card>
+
+<app-confirm-modal *ngIf="mostrarConfirmacaoAdicaoAluno" [titulo]="'Adicionar Aluno'"
+  [mensagem]="'Deseja adicionar este aluno com os cursos selecionados?'" [textoConfirmar]="'Sim, adicionar'"
+  [textoCancelar]="'Cancelar'" (confirm)="confirmarAdicaoAluno()" (cancel)="mostrarConfirmacaoAdicaoAluno = false">
+</app-confirm-modal>
+
+<app-confirm-modal *ngIf="mostrarConfirmacaoRemocaoAluno" [titulo]="'Remover Aluno'"
+  [mensagem]="'Tem certeza que deseja remover este aluno?'" [textoConfirmar]="'Sim, remover'"
+  [textoCancelar]="'Cancelar'" (confirm)="confirmarRemocaoAluno()" (cancel)="mostrarConfirmacaoRemocaoAluno = false">
+</app-confirm-modal>

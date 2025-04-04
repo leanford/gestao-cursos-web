@@ -38,3 +38,16 @@ table {
 ::ng-deep .mat-mdc-row:last-child .mat-mdc-cell:last-child {
   border-bottom-right-radius: 8px;
 }
+
+
+@media (max-width: 600px) {
+
+  .filter-container,
+  .form-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 5px;
+    margin-bottom: 15px;
+  }
+}
