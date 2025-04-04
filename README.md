@@ -76,5 +76,5 @@ A API ficará disponível em:
 
 ## ✍️ Autor
 
-Desenvolvido por Leandro Alves (https://github.com/leanford) com 💙  
+Desenvolvido por Leandro Alves ([github.com/leanford](https://github.com/leanford)) com 💙  
 Contribuições, sugestões e melhorias são sempre bem-vindas!
